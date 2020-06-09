@@ -20,7 +20,7 @@ public class Screens{
         Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //закрытие окна - прекращение работы программы
 
         JPanel Panel = new JPanel(null); //задаём панель, на котором можно размещать другие элементы
-        // Установка абсолютного позиционирования
+      
         Window.setVisible(true); // видимость фигуры
         Panel.setBackground(Color.pink);
         Window.add(Panel); //добавляем панель к фрейму
