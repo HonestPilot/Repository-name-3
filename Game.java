@@ -179,6 +179,7 @@ public void Play()throws Exception{
                     break;
                 case "Выписть исцеляющее зелье":
                     tom.Drink_Potion();
+                    if(tom.hp>tom.max_hp){tom.hp=tom.max_hp;}
                     break;
             }
             //ход монстра
