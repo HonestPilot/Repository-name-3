@@ -8,9 +8,7 @@ import java.awt.event.ActionListener;
 import static javax.swing.JOptionPane.*;
 
 public class Screens{
-    private Game game;
     private Main main;
-    int wid = 1080, hei = 720; //Переменные, отвечающие за размеры окна
 
     public void MainScreen() {
         int bx = 180, by = 35;
@@ -40,7 +38,7 @@ public class Screens{
         button5.setBounds(bx, by + 200, 150, 35);
         Panel.add(button5);
         Panel.setVisible(true);
-        Window.pack(); //объединяем в пакет
+        Window.pack();
 
         button1.addActionListener(new ActionListener() {
             @Override
@@ -98,6 +96,7 @@ public class Screens{
         });
 
     }
+    
     public static String DialogName(){
         return showInputDialog("Имя игрока:");
             }
