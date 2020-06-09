@@ -96,7 +96,7 @@ public class Screens{
         });
 
     }
-    
+
     public static String DialogName(){
         return showInputDialog("Имя игрока:");
             }
@@ -128,6 +128,7 @@ public class Screens{
     public static void  DialogWin(String name, int score){
         showInputDialog(null,"Ты победил, герой "+name+"!\nСчёт:"+score+"\nСкажи пару слов на прощанье:\n");
     }
+    
 }
 
 
