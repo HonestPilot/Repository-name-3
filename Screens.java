@@ -100,11 +100,13 @@ public class Screens{
     public static String DialogName(){
         return showInputDialog("Имя игрока:");
             }
+
     public static String DialogDoor(){
        String[] door  = {"Первая дверь", "Вторая дверь"};
         Object result=showInputDialog(null, "Сделай правильный выбор, герой!","Двери",JOptionPane.PLAIN_MESSAGE,null,door,null);
         return String.valueOf(result);
     }
+    
     public static String  DialogMonster(String PlayerInfo, String MonsterName){
          String[] punch  = {"Ударить по голове", "Ранить тело", "Сломать колени", "Укусить за руку", "Выписть исцеляющее зелье"};
         Object result=showInputDialog(null,"За этой дверью был "+MonsterName+"! Настало время битвы!\nЧто будешь делать?\nСтатус героя: "+PlayerInfo,"Бой",JOptionPane.PLAIN_MESSAGE,null,punch,null);
@@ -113,7 +115,7 @@ public class Screens{
 
   public static void  DialogLoot(String Message, int Score){
       showMessageDialog(null,Message+ "\nЧисло очков: "+ Score);
-  }
+   }
 
     public static String  DialogUpgrade(){
         String[] Choose  = {"Здоровье HP", "Сила"};
@@ -128,7 +130,7 @@ public class Screens{
     public static void  DialogWin(String name, int score){
         showInputDialog(null,"Ты победил, герой "+name+"!\nСчёт:"+score+"\nСкажи пару слов на прощанье:\n");
     }
-    
+
 }
 
 
