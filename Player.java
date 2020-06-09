@@ -21,8 +21,9 @@ public class Player {
     }
 
     //methods
-    public void displayInfo(){
-        System.out.printf("Name: %s \tHP: %d \t max HP: %d \tStrength: %d \tPlayer LvL: %d \tArmor Damage: %d \t\n", name, hp,max_hp, strength,lvl, weapon.Damage_Weapon());
+     public String displayInfo(){
+        String SomeString= ("\nName: " + name+ " HP: "+ hp +" max HP: " +max_hp+ " Strength: " +strength+ "\nPlayer LvL: "+lvl+ " Armor Damage: "+weapon.Damage_Weapon());
+       return SomeString;
     }
 
     public int Player_HP(){

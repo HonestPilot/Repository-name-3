@@ -28,8 +28,9 @@ public class Monster {
     }
 
     //methods
-    public void displayInfo(){
-        System.out.printf("Name: %s \tHP: %d\n", name, hp);
+     public String displayInfo(){
+        String Monster = (name+" HP: "+ hp);
+        return Monster;
     }
 
     public void Set_Monster_HP(int a){
