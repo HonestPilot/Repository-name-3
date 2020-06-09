@@ -4,6 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import static javax.swing.JOptionPane.*;
 
@@ -67,7 +74,7 @@ public class Screens{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    main.Hall_of_Fame();
+                    DialogHerosWords();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -118,36 +125,63 @@ public class Screens{
         return String.valueOf(result);
     }
 
-    public static void  DialogLose(String name, int score){
-        showInputDialog(null,"Игра окончена, герой "+name+"!\nСчёт:"+score+" \nПоследние слова:");
+    public static void DialogLose(String name, int score) throws IOException {
+        Object result=showInputDialog(null,"Игра окончена, герой "+name+"!\nСчёт:"+score+" \nПоследние слова:");
+        AddWords(name,score,String.valueOf(result));
     }
 
-    public static void  DialogWin(String name, int score){
-        showInputDialog(null,"Ты победил, герой "+name+"!\nСчёт:"+score+"\nСкажи пару слов на прощанье:\n");
+    public static void  DialogWin(String name, int score) throws IOException {
+        Object result=showInputDialog(null,"Ты победил, герой "+name+"!\nСчёт:"+score+"\nСкажи пару слов на прощанье:\n");
+        AddWords(name,score,String.valueOf(result));
     }
     public static void  DialogAboutMonster(String MonsterName, String MonsterInfo){
         showMessageDialog(null,"За этой дверью был " +MonsterName+ "\nЧисло очков: "+ MonsterInfo);
     }
-    public static String  DialogHerosWords(String Name, String Message, int Score){
-        String[] Texts={" однажды сказал: ", " просто подумал, что  ", " высек на камне: "," написал книгу о своём приключении\nпод названием:",", чей девиз : "};
-        int i = (int)(Math.random()*5);
-        String Sometext = Texts[i];
-        String result = Name+ Sometext +Message+ "\nЧисло очков: "+ Score;
-        showMessageDialog(null,result);
-        return String.valueOf(result);
+
+        public static void  DialogAboutGame(){
+            String Message = "Добро пожаловать в игру Подземелья! Каждый раунд на выбор тебе дается две двери:\n" +
+                    "за одной из них находятся сокровища (золотые монеты или оружие), а за другой тебя ждет битва с монстром!\n" +
+                    "Каждый монстр имеет свой уникальный запас здоровья, силу, и имеет разные уязвимые места. Для победы над монстром\n" +
+                    "тебе понадобится применить смекалку и свои стратегические способности. Каждый ход монстра можно ударить по одной\n" +
+                    "из четырех болевых точек. Или же можно выпить исцеляющее зелье, но это займет целый ход. При успешном поражении монстра\n" +
+                    "тебе будет предложен выбор: увеличить свой запас здоровья или усилить мощность удара. Также за каждый выигранный бой\n" +
+                    "повышается и твой уровень. Если же победа была одержана монстром, единственное, что тебе остается - не отчаиваться и\n" +
+                    "оставить парочку слов напоследок для доски почета. Всего в игре 5 уровней, и, чтобы пройти игру, нужно одолеть всех\n" +
+                    "монстров, повстречавшихся тебе на пути. Желаем удачи!";
+            showMessageDialog(null,Message);
+        }
+
+    public static void DialogHerosWords() throws FileNotFoundException {
+        Scanner NewScan = new Scanner(new File("HeroesWords.txt"));
+        ArrayList<String> InfoAboutHero = new ArrayList<>();
+        int NumberHeroes = 0;
+        while (NewScan.hasNextLine()) {
+            InfoAboutHero.add(NewScan.nextLine());
+            NumberHeroes++;
+        }
+        String[] Names = new String[256];
+        String[] Scores = new String[256];
+        String[] Words = new String[256];
+        for (int i = 0; i < NumberHeroes; i++) {
+            String[] HelpStr = (InfoAboutHero.get(i)).split("_");
+            Names[i] = HelpStr[0] ;
+            Scores[i] = HelpStr[1];
+            Words[i] =HelpStr[2];
+        }
+        String[] Texts = {" однажды сказал: ", " просто подумал, что  ", " высек на камне: ", " написал книгу о своём приключении\nпод названием:", ", чей девиз : "};
+        String[] result = new String[256];
+        for (int i = 0; i < NumberHeroes; i++) {
+            int j = (int) (Math.random() * 5);
+            String Sometext = Texts[j];
+            result[i] = Names[i] + Sometext + Words[i] + "\nЧисло очков: " + Scores[i]+"\n";
+        }
+        showMessageDialog(null, result);
     }
-    public static void  DialogAboutGame(){
-        String Message = "Добро пожаловать в игру Подземелья! Каждый раунд на выбор тебе дается две двери:\n" +
-                "за одной из них находятся сокровища (золотые монеты или оружие), а за другой тебя ждет битва с монстром!\n" +
-                "Каждый монстр имеет свой уникальный запас здоровья, силу, и имеет разные уязвимые места. Для победы над монстром\n" +
-                "тебе понадобится применить смекалку и свои стратегические способности. Каждый ход монстра можно ударить по одной\n" +
-                "из четырех болевых точек. Или же можно выпить исцеляющее зелье, но это займет целый ход. При успешном поражении монстра\n" +
-                "тебе будет предложен выбор: увеличить свой запас здоровья или усилить мощность удара. Также за каждый выигранный бой\n" +
-                "повышается и твой уровень. Если же победа была одержана монстром, единственное, что тебе остается - не отчаиваться и\n" +
-                "оставить парочку слов напоследок для доски почета. Всего в игре 5 уровней, и, чтобы пройти игру, нужно одолеть всех\n" +
-                "монстров, повстречавшихся тебе на пути. Желаем удачи!";
-        showMessageDialog(null,Message);
-    }
+
+      public static void AddWords(String name, int score, String Str) throws IOException{
+       FileWriter writer = new FileWriter("HeroesWords.txt", true);
+         String text = name+'_'+score+'_'+Str+'\n';
+         writer.write(text);
+         writer.flush();
+        }
 }
-
-
