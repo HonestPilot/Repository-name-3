@@ -12,8 +12,7 @@ public class Monster {
     int Resist_Arms;
     int strength;
     int score;
-	String information;
-	
+    String information;
 
     //constructor
     Monster(String name, int hp, int strength, int lvl, int resist_Head, int resist_Body, int resist_Arms, int resist_Legs,int score, String information){
@@ -26,19 +25,15 @@ public class Monster {
         this.Resist_Arms=resist_Arms;
         this.Resist_Legs=resist_Legs;
         this.score=score;
-		this.information=information;
+        this.information=information;
     }
-
     //methods
-     public String displayInfo(){
+    public String displayInfo(){
         String Monster = (name+" HP: "+ hp);
         return Monster;
     }
 
     public void Set_Monster_HP(int a){
         hp=hp-a;
-    }
-    public void showHP(){
-        System.out.printf("Name: %s \tHP: %d\n", name, hp);
     }
 }

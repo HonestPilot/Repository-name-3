@@ -4,7 +4,6 @@ public class Weapon {
     //attributes
      String name;
     int max_damage;
-    int lvl;
     private int min_damage;
     private int crit_rate;
 
@@ -43,7 +42,4 @@ public class Weapon {
 public int Damage_Weapon(){
         return (max_damage);
 }
-    public void displayInfo(){
-        System.out.printf("Name: %s \tMax damage: %d\tMin damage: %d\tCrit rate: %d\n", name, max_damage,min_damage,crit_rate);
-    }
 }

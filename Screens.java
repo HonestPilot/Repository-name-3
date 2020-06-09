@@ -10,20 +10,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.StringTokenizer;
+
 
 import static javax.swing.JOptionPane.*;
 
 public class Screens{
+    private static Game game;
     private Main main;
 
     public void MainScreen() {
         int bx = 180, by = 35;
         int wid = 540, hei =360;
-        JFrame Window = new JFrame("Game"); //создание окна с названием "Game"
-        Window.setPreferredSize(new Dimension(wid, hei)); //Размеры окна
-        Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //закрытие окна - прекращение работы программы
-        JPanel Panel = new JPanel(null); //задаём панель, на котором можно размещать другие элементы
+
+        JFrame Window = new JFrame("Game: Подземелье");
+        Window.setPreferredSize(new Dimension(wid, hei));
+        Window.setLocation( 450, 180);
+        Window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel Panel = new JPanel(null);
         // Установка абсолютного позиционирования
         Window.setVisible(true); // видимость фигуры
         Panel.setBackground(Color.pink);
@@ -110,13 +113,13 @@ public class Screens{
         return String.valueOf(result);
     }
     public static String  DialogMonster(String PlayerInfo, String MonsterName){
-         String[] punch  = {"Ударить по голове", "Ранить тело", "Сломать колени", "Укусить за руку", "Выписть исцеляющее зелье"};
+         String[] punch  = {"Ударить по голове", "Ранить тело", "Сломать колени", "Укусить за руку", "Выпить исцеляющее зелье"};
         Object result=showInputDialog(null,"Настало время битвы! Противник: "+MonsterName+"!\nЧто будешь делать?\nСтатус героя: "+PlayerInfo,"Бой",JOptionPane.PLAIN_MESSAGE,null,punch,null);
          return String.valueOf(result);
     }
 
-  public static void  DialogLoot(String Message, int Score){
-      showMessageDialog(null,Message+ "\nЧисло очков: "+ Score);
+  public static void  DialogLoot(String Weapon,String Message, int Score){
+      showMessageDialog(null,"Ты обнаружил "+Weapon +"!\n"+ Message+ "\nЧисло очков: "+ Score);
   }
 
     public static String  DialogUpgrade(){
@@ -135,8 +138,14 @@ public class Screens{
         AddWords(name,score,String.valueOf(result));
     }
     public static void  DialogAboutMonster(String MonsterName, String MonsterInfo){
-        showMessageDialog(null,"За этой дверью был " +MonsterName+ "\nЧисло очков: "+ MonsterInfo);
+        showMessageDialog(null,"За этой дверью был " +MonsterName+ "\n"+ MonsterInfo);
     }
+    public static String DialogSaveOrNot() throws Exception {
+        String[] Choose  = {"Сохранить игру", "Сохранить игру и выйти", "Выйти без сохранения"};
+        Object result=showInputDialog(null,"Хочешь сохранить прогресс?","Контрольная точка",JOptionPane.PLAIN_MESSAGE,null,Choose,null);
+        return String.valueOf(result);
+    }
+
 
         public static void  DialogAboutGame(){
             String Message = "Добро пожаловать в игру Подземелья! Каждый раунд на выбор тебе дается две двери:\n" +
@@ -184,4 +193,5 @@ public class Screens{
          writer.write(text);
          writer.flush();
         }
+
 }

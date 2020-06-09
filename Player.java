@@ -21,7 +21,7 @@ public class Player {
     }
 
     //methods
-     public String displayInfo(){
+    public String displayInfo(){
         String SomeString= ("\nName: " + name+ " HP: "+ hp +" max HP: " +max_hp+ " Strength: " +strength+ "\nPlayer LvL: "+lvl+ " Armor Damage: "+weapon.Damage_Weapon());
        return SomeString;
     }
@@ -50,19 +50,16 @@ public class Player {
         this.weapon=weap;
     }
 
-    //public int Player_Weapon(){
-      //  this.weapon=weap;
-   // }
-
     public void Drink_Potion(){
-        hp=hp+5;
+        hp=hp+10;
     }
     public void Increase_HP(){
         max_hp=max_hp+5;
     }
     public void Increase_Strength(){
-        strength=strength+1;
+        strength=strength+2;
     }
 
-
+    public int Max_Damage_Weapon() { int damage= this.weapon.max_damage; return (damage);}
 }
+
