@@ -1,31 +1,27 @@
 package com.company;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
-import java.io.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
+
 
 
 public class Game {
-    //attributes
-    File myFile = new File("C://Users//Rita//Desktop//MyGame.txt");
-    File myFile1 = new File("C://Users//Rita//Desktop", "MyGame.txt");
 
     private Player tom;
-    private Monster monsters[][];
-    private Weapon weapons[];
+    private Monster[][] monsters;
+    private Weapon[] weapons;
     private int score;
 
-    //constructor
-           Game(){
-            Scanner text = new Scanner(System.in);
-            System.out.print("Input name: ");
-            String charactername = text.nextLine();
-            tom=new Player(charactername);
+    Game(){
 
-            //generate monsters
+         tom=new Player(Screens.DialogName());
+
     monsters = new Monster [5][2];
     monsters[0][0]=new Monster("Воин-наемник орков",10,3,1,5,4,1,2,50);
     monsters[0][1]=new Monster("Жук-ассасин",10,3,1,6,3,2,1,50);
@@ -39,7 +35,6 @@ public class Game {
     monsters[4][1]=new Monster("Королева банши",100,11,5,10,15,20,5,1000);
     monsters[0][0].displayInfo();
 
-    //generate weapons
      weapons = new Weapon [11];
      weapons[0]=new Weapon("Меч архангела",3,10,40);
      weapons[1]=new Weapon("Меч волшебного тумана",2,12,40);
@@ -54,95 +49,92 @@ public class Game {
      weapons[10]=new Weapon("Экскалибур",20,35,70);
      tom.weapon=weapons[0];
     }
-    /*
-    Game(Player tom, Monster monsters[], int score){
-        this.tom=tom;
-monstr
-        score
-        //generate weapons
-        weapons = new Weapon [10];
-        weapons[0]=new Weapon("Archangel_Sword",3,10,40);
-        weapons[1]=new Weapon("Sword of Magic Fog",2,12,40);
-        tom.weapon=weapons[0];
-        //нужна запись в файл
-    }
-    */
+  
     //methods
+      public void Load_Game()throws Exception{
+      String File_name = tom.name;
+      try {
+          DataInputStream dos = new DataInputStream(new FileInputStream(File_name + ".bin"));
+          try {
+              boolean life_status = dos.readBoolean();
 
-    public void File_Writer() throws Exception{
-        String File_name=tom.name;
-        try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(File_name+".bin")))
-        {
-            // записываем значения
-            /*dos.writeBoolean(tom.life_status);
-            dos.writeInt(tom.lvl);
-            dos.writeInt(tom.hp);
-            dos.writeInt(tom.max_hp);
-            dos.writeInt(tom.strength);
-            dos.writeUTF(tom.name);
-            dos.writeInt(score);*/
-            dos.writeBoolean(tom.life_status);
-            dos.writeInt(2);
-            dos.writeInt(10);
-            dos.writeInt(20);
-            dos.writeInt(2);
-            dos.writeUTF(tom.name);
-            dos.writeInt(score);
-            System.out.println("File has been written");
-        }
-        catch(IOException ex){
+              this.tom.lvl = dos.readInt();
+              this.tom.hp = dos.readInt();
+              this.tom.max_hp = dos.readInt();
+              this.tom.strength = dos.readInt();
+              String name = dos.readUTF();
+              this.score = dos.readInt();
+              this.tom.displayInfo();
+          } catch (Throwable var11) {
+              try {
+                  dos.close();
+              } catch (Throwable var10) {
+                  var11.addSuppressed(var10);
+              }
 
-            System.out.println(ex.getMessage());
-        }
-    }
-    public void File_Reader() throws Exception{
-        String File_name=tom.name;
-        try(DataInputStream dos = new DataInputStream(new FileInputStream(File_name+".bin")))
-        {
-            //записываем значения
-            boolean life_status = dos.readBoolean();
-            int lvl = dos.readInt();
-            int hp = dos.readInt();
-            int max_hp = dos.readInt();
-            int strength = dos.readInt();
-            String name = dos.readUTF();
-            int new_score = dos.readInt();
-            tom.lvl=lvl;
-            tom.hp=hp;
-            tom.max_hp=max_hp;
-            tom.strength=strength;
-            score=new_score;
-            tom.displayInfo();
-            System.out.printf("Alive: %b lvl: %d hp: %d max_hp: %d strenght: %d Name: %s score: %d",
-                    life_status, lvl, hp,max_hp,strength,name,new_score);
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
-    }
+              throw var11;
+          }
 
-    public void File_work()throws Exception {
-        //File_Writer();
-       File_Reader();
+          dos.close();
+      } catch (IOException var12) {
+          System.out.println(var12.getMessage());
+      }
+
+  }
+
+    public void Save_Game() throws Exception {
+        String File_name = this.tom.name;
+        try {
+            DataOutputStream dos = new DataOutputStream(new FileOutputStream(File_name + ".bin"));
+
+            try {
+                dos.writeBoolean(this.tom.life_status);
+                dos.writeInt(2);
+                dos.writeInt(10);
+                dos.writeInt(20);
+                dos.writeInt(2);
+                dos.writeUTF(this.tom.name);
+                dos.writeInt(this.score);
+                System.out.println("File has been written");
+            } catch (Throwable var6) {
+                try {
+                    dos.close();
+                } catch (Throwable var5) {
+                    var6.addSuppressed(var5);
+                }
+
+                throw var6;
+            }
+
+            dos.close();
+        } catch (IOException var7) {
+            System.out.println(var7.getMessage());
+        }
+
     }
 
 public void Play()throws Exception{
         File_work();
         while(tom.Player_LVL()<5 && tom.life_status==true){
-       Open_Door();}
+        Open_Door();
+            if(tom.Player_LVL()==5){
+                Screens.DialogWin(tom.name, score);
+                Screens screen = new Screens();
+                screen.MainScreen();
+                break;
+            }
+        }
     }
 
     private void Open_Door()throws Exception{
+           Screens.DialogDoor();
         int door =(int)(Math.random()*2);
-        System.out.println("Дверь выбрана");
-        System.out.println(door);
         switch (door) {
-            case 0:  Fight_with_Monster();
+            case 0:   Fight_with_Monster();
                 break;
-            case 1:  Loot();
+            case 1:   Loot();
                 break;
-            case 2:  File_Writer();
-                break;
+            default: break;
         }
     }
     private int Set_Monster(){
@@ -153,17 +145,12 @@ public void Play()throws Exception{
     }
 
     private void Upgrade(){
-        System.out.println("Выберите, что желаете усилить: ");
-        System.out.println("1. HP");
-        System.out.println("2. Strength");
-        Scanner num2 = new Scanner(System.in);
-        int menu_num = num2.nextInt();
-        switch (menu_num) {
-            case 1: {
+           switch (Screens.DialogUpgrade()) {
+            case "Здоровье HP": {
                 tom.Increase_HP();
             }
             break;
-            case 2: {
+            case "Сила": {
                 tom.Increase_Strength();
             }
             break;
@@ -171,35 +158,27 @@ public void Play()throws Exception{
     }
 
     private void Fight_with_Monster(){
-        System.out.println("Начало боя");
         //выбор монстра на рандоме
         int monster_number = Set_Monster();
         int monster_lvl = tom.Player_LVL();
         //пока кто-то не умрет
         while(tom.Player_HP()>0 && monsters[monster_lvl][monster_number].hp>0){
             //ход игрока
-            System.out.println("Выбирай, куда бить: ");
-            System.out.println("1. Голова");
-            System.out.println("2. Тело");
-            System.out.println("3. Колени");
-            System.out.println("4. Руки");
-            System.out.println("5. Выпить исцеляющее зелье");
-            Scanner num1 = new Scanner(System.in);
-            int menu_num = num1.nextInt();
-            switch (menu_num) {
-                case 1:
+             String Action = Screens.DialogMonster(tom.displayInfo(), monsters[monster_lvl][monster_number].displayInfo());
+            switch (Action) {
+                case "Ударить в голову":
                     monsters[monster_lvl][monster_number].Set_Monster_HP(tom.strength+weapons[0].Weapon_Damage()/monsters[monster_lvl][monster_number].Resist_Head);
                     break;
-                case 2:
+                case "Ранить тело":
                     monsters[monster_lvl][monster_number].Set_Monster_HP(tom.strength+weapons[0].Weapon_Damage()/monsters[monster_lvl][monster_number].Resist_Body);
                     break;
-                case 3:
+                case "Сломать колени":
                     monsters[monster_lvl][monster_number].Set_Monster_HP(tom.strength+weapons[0].Weapon_Damage()/monsters[monster_lvl][monster_number].Resist_Legs);
                     break;
-                case 4:
+                case "Укусить за руку":
                     monsters[monster_lvl][monster_number].Set_Monster_HP(tom.strength+weapons[0].Weapon_Damage()/monsters[monster_lvl][monster_number].Resist_Arms);
                     break;
-                case 5:
+                case "Выписть исцеляющее зелье":
                     tom.Drink_Potion();
                     break;
             }
@@ -209,37 +188,40 @@ public void Play()throws Exception{
             tom.displayInfo();
         }
         if(tom.Player_HP()<=0){
-            System.out.println("You lose");
+            Screens.DialogLose(tom.name, score);
             tom.Set_Player_Life_Status(false);
-            // ПРОПИСАТЬ ЭТОТ МОМЕНТ ПОДРОБНЕЕ
+            Screens screen = new Screens();
+            screen.MainScreen();
         }
         if(monsters[monster_lvl][monster_number].hp<=0) {
-            System.out.println("Вы победили монстра!");
             tom.Set_Player_Life_Status(true);
-            score=monsters[monster_lvl][monster_number].score+score;
+            score += monsters[monster_lvl][monster_number].score;
             Upgrade();
-            tom.Set_Player_LVL(); //повышение уровня
+            tom.Set_Player_LVL();
             tom.displayInfo();
+            Save_Game();
         }
     }
 
     private void Loot(){
         int new_score;
+        String message= null;
         Weapon new_weapon;
         int max_score=100, min_score=20;
         int i =(int)(Math.random()*10);
         new_weapon=weapons[i];
         if(new_weapon.max_damage>tom.weapon.max_damage){
                 tom.Change_Weapon(new_weapon);
-                System.out.println("Вы сменили оружие на более сильное");
+                       message="Вы сменили оружие на более сильное";
         }
         else{
-        System.out.println("Ваше оружие лучше того, что вы нашли");}
-        int diff = max_score-min_score;
+            message="Ваше оружие лучше того, что вы нашли";}
+        int diff = max_score - min_score;
         Random random = new Random();
-        new_score = random.nextInt(diff + 1);
-        new_score =new_score+min_score;
-        score=score+new_score;
+        int new_score = random.nextInt(diff + 1);
+        new_score += min_score;
+        score += new_score;
+        Screens.DialogLoot(message,score);
         tom.displayInfo();
     }
 
