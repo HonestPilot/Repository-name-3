@@ -114,7 +114,6 @@ public class Game {
     }
 
 public void Play()throws Exception{
-        File_work();
         while(tom.Player_LVL()<5 && tom.life_status==true){
         Open_Door();
             if(tom.Player_LVL()==5){
@@ -204,7 +203,6 @@ public void Play()throws Exception{
     }
 
     private void Loot(){
-        int new_score;
         String message= null;
         Weapon new_weapon;
         int max_score=100, min_score=20;
